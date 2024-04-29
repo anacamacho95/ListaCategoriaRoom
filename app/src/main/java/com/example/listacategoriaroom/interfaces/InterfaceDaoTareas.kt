@@ -1,44 +1,40 @@
 package com.example.listacategoriaroom.interfaces
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.listacategoriaroom.entidades.Categoria
 import com.example.listacategoriaroom.entidades.Item
 import com.example.listacategoriaroom.entidades.Tarea
 
-interface InterfaceDaoTareas :InterfaceDao{
+@Dao
+interface InterfaceDaoTareas {
     //CRUD TAREAS
     @Insert
-    fun addTarea (idCategoria: Int, ta: Tarea)
-
-    //leer Todas las tareas
-    @Query("SELECT * FROM Tarea WHERE idCategoria LIKE :idCat")
+    fun addTarea (ta: Tarea)
+    // Obtener ID de Categoria por nombre
+    @Query("SELECT idCategoria FROM Categoria WHERE nombre LIKE :nombre")
+    fun getCategoriaId(nombre: String): Int
+    @Query("SELECT * FROM Tarea WHERE categoriaPadreId = :idCat OR categoriaHijoId = :idCat")
     fun getTareas(idCat: Int): MutableList<Tarea>
-
     @Update
-    fun updateNombreTarea(idCat: Int, taAnt: Tarea, taNue: Tarea)
-
+    fun updateNombreTarea(ta: Tarea)
     @Delete
-    fun deleteTarea (idCat: Int, ta: Tarea)
+    fun deleteTarea (ta: Tarea)
 
     //CRUD ITEMS
     @Insert
-    fun addItem (ca: Categoria, ta: Tarea, ite: Item)
-
-    //leer Todos los items
-    @Query("SELECT * FROM Item WHERE Tarea LIKE :ta AND Categoria LIKE :ca")
-    fun getItems(ca: Categoria, ta: Tarea): MutableList<Item>
-
+    fun addItem (ite: Item)
+    // Obtener ID de Tarea por nombre y ID de Categoria
+    @Query("SELECT categoriaHijoId FROM Tarea WHERE nombre LIKE :nombre")
+    fun getTareaId(nombre: String): Int
+    @Query("SELECT * FROM Item WHERE tareaPadreId LIKE :id")
+    fun getItems(id: Int): MutableList<Item>
     @Update
-    fun updateItem(ca: Categoria, ta: Tarea,iteAnt: Item, iteNue: Item)
-
+    fun updateItem(ite: Item)
     @Delete
-    fun deleteItem (ca: Categoria ,ta: Tarea, ite: Item)
+    fun deleteItem (ite: Item)
 
     //NºItems
-    @Query("SELECT COUNT(*) FROM Item WHERE idTarea = :taId AND idCategoria = :caId")
-    fun getNItems(ca: Categoria, ta: Tarea): Int
+    @Query("SELECT COUNT(*) FROM Item WHERE tareaPadreId = :taId")
+    fun getNItems(taId: Int): Int
 
 }
