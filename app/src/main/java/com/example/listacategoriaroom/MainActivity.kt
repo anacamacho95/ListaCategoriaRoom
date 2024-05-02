@@ -7,7 +7,7 @@ import com.example.listacategoriaroom.conexiones.BDRoom
 import com.example.listacategoriaroom.entidades.Categoria
 import com.example.listacategoriaroom.entidades.Item
 import com.example.listacategoriaroom.entidades.Tarea
-import com.example.listacategoriaroom.interfaces.InterfaceDao
+import com.example.listacategoriaroom.interfaces.InterfaceDaoConexion
 import com.example.listacategoriaroom.interfaces.InterfaceDaoCategorias
 import com.example.listacategoriaroom.interfaces.InterfaceDaoTareas
 
@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
 
         val conexion= BDRoom(this)
 
-        (daoTarea as InterfaceDao).createConexion(conexion)
-        (daoCategoria as InterfaceDao).createConexion(conexion)
+        (daoTarea as InterfaceDaoConexion).createConexion(conexion)
+        (daoCategoria as InterfaceDaoConexion).createConexion(conexion)
 
         //daoTarea.createConexion(conexion)
         //daoCategoria.createConexion(conexion)
