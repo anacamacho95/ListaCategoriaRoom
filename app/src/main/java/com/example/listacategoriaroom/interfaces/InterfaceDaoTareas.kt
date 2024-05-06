@@ -13,19 +13,23 @@ interface InterfaceDaoTareas {
     // Obtener ID de Categoria por nombre
     @Query("SELECT idCategoria FROM Categoria WHERE nombre LIKE :nombre")
     fun getCategoriaId(nombre: String): Int
-    @Query("SELECT * FROM Tarea WHERE categoriaPadreId = :idCat OR categoriaHijoId = :idCat")
+    @Query("SELECT * FROM Tarea WHERE categoriaPadreId = :idCat ")
     fun getTareas(idCat: Int): MutableList<Tarea>
     @Update
-    fun updateNombreTarea(ta: Tarea)
+    fun updateTarea(ta: Tarea)
     @Delete
     fun deleteTarea (ta: Tarea)
 
     //CRUD ITEMS
     @Insert
     fun addItem (ite: Item)
-    // Obtener ID de Tarea por nombre y ID de Categoria
-    @Query("SELECT categoriaHijoId FROM Tarea WHERE nombre LIKE :nombre")
+    // Obtener ID de Tarea por nombre
+    @Query("SELECT idTarea FROM Tarea WHERE nombre LIKE :nombre")
     fun getTareaId(nombre: String): Int
+
+    @Query("SELECT idItem FROM Item WHERE accion LIKE :nombre")
+    fun getItemId(nombre: String): Int
+
     @Query("SELECT * FROM Item WHERE tareaPadreId LIKE :id")
     fun getItems(id: Int): MutableList<Item>
     @Update

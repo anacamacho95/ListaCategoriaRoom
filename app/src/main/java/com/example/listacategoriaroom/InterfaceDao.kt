@@ -52,8 +52,8 @@ class InterfaceDao: InterfaceDaoConexion, InterfaceDaoCategorias, InterfaceDaoTa
         return db.conexion.daoTarea().getTareas(idCat)
     }
 
-    override fun updateNombreTarea(ta: Tarea) {
-        return db.conexion.daoTarea().updateNombreTarea(ta)
+    override fun updateTarea(ta: Tarea) {
+        return db.conexion.daoTarea().updateTarea(ta)
     }
 
     override fun deleteTarea(ta: Tarea) {
@@ -66,6 +66,10 @@ class InterfaceDao: InterfaceDaoConexion, InterfaceDaoCategorias, InterfaceDaoTa
 
     override fun getTareaId(nombre: String): Int {
         return db.conexion.daoTarea().getTareaId(nombre)
+    }
+
+    override fun getItemId(nombre: String): Int {
+        return  db.conexion.daoTarea().getItemId(nombre)
     }
 
     override fun getItems(id: Int): MutableList<Item> {
