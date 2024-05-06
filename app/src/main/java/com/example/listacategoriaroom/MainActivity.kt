@@ -7,7 +7,6 @@ import com.example.listacategoriaroom.conexiones.BDRoom
 import com.example.listacategoriaroom.entidades.Categoria
 import com.example.listacategoriaroom.entidades.Item
 import com.example.listacategoriaroom.entidades.Tarea
-import com.example.listacategoriaroom.interfaces.InterfaceDaoConexion
 import com.example.listacategoriaroom.interfaces.InterfaceDaoCategorias
 import com.example.listacategoriaroom.interfaces.InterfaceDaoTareas
 
@@ -20,12 +19,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val conexion= BDRoom(this)
-
-        (daoTarea as InterfaceDaoConexion).createConexion(conexion)
-        (daoCategoria as InterfaceDaoConexion).createConexion(conexion)
-
-        //daoTarea.createConexion(conexion)
-        //daoCategoria.createConexion(conexion)
+        daoCategoria=InterfaceDao()
+        daoTarea=InterfaceDao()
+        (daoCategoria as InterfaceDao).createConexion(conexion)
+        (daoTarea as InterfaceDao).createConexion(conexion)
 
         //conexion.borrarArchivos()
         Log.d("pruebas", " -- Datos previos eliminados --")
