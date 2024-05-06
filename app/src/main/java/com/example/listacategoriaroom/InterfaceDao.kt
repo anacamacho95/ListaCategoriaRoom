@@ -40,6 +40,8 @@ class InterfaceDao: InterfaceDaoConexion, InterfaceDaoCategorias, InterfaceDaoTa
 
     override fun addTarea(ta: Tarea) {
         return db.conexion.daoTarea().addTarea(ta)
+
+         //
     }
 
     override fun getCategoriaId(nombre: String): Int {

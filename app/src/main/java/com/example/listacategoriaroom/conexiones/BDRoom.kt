@@ -14,7 +14,15 @@ class BDRoom (private val context: Context){
     val conexion= BaseDatos.getBaseDatos(context)
 
     fun borrarArchivos(){
+        // Cierra la conexión de la base de datos antes de borrar los archivos
+        conexion.close()
 
+        // Borra la base de datos
+        context.deleteDatabase("categoriasDB")
+
+        // Vuelve a crear la base de datos
+        BaseDatos.INSTANCE = null
+        BaseDatos.getBaseDatos(context)
     }
 }
 @Database(entities = [Categoria::class, Tarea::class, Item::class], version = 1)

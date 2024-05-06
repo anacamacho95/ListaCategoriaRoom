@@ -8,11 +8,12 @@ import com.example.listacategoriaroom.entidades.Categoria
 import com.example.listacategoriaroom.entidades.Item
 import com.example.listacategoriaroom.entidades.Tarea
 import com.example.listacategoriaroom.interfaces.InterfaceDaoCategorias
+import com.example.listacategoriaroom.interfaces.InterfaceDaoConexion
 import com.example.listacategoriaroom.interfaces.InterfaceDaoTareas
 
 class MainActivity : AppCompatActivity() {
-    lateinit var daoCategoria: InterfaceDaoCategorias
-    lateinit var daoTarea: InterfaceDaoTareas
+    lateinit var daoCategoria: InterfaceDao
+    lateinit var daoTarea: InterfaceDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +22,12 @@ class MainActivity : AppCompatActivity() {
         val conexion= BDRoom(this)
         daoCategoria=InterfaceDao()
         daoTarea=InterfaceDao()
-        (daoCategoria as InterfaceDao).createConexion(conexion)
-        (daoTarea as InterfaceDao).createConexion(conexion)
+        (daoCategoria).createConexion(conexion)
+        (daoTarea as InterfaceDaoConexion).createConexion(conexion)
+        //(daoCategoria as InterfaceDao).createConexion(conexion)
+        //(daoTarea as InterfaceDao).createConexion(conexion)
 
-        //conexion.borrarArchivos()
+        conexion.borrarArchivos()
         Log.d("pruebas", " -- Datos previos eliminados --")
 
         pruebas()
@@ -46,9 +49,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("pruebas", " *** Añado tareas a la categoria Hogar *** ")
-        var cocina = Tarea(hogar,hogar, "Cocina")
+        var cocina = Tarea(daoTarea.getCategoriaId("Hogar"), "Cocina")
         daoTarea.addTarea(cocina)
-        var aseo = Tarea(hogar,hogar, "Aseo")
+        var aseo = Tarea(daoTarea.getCategoriaId("Hogar"), "Aseo")
         daoTarea.addTarea(aseo)
         val tareasHogar1: List<Tarea> = daoTarea.getTareas(daoTarea.getCategoriaId("hogar"))
         tareasHogar1.forEach {
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("pruebas", " *** Añado items a la tarea Cocina *** ")
-        var coc1 = Item(cocina, cocina,"Hacer canelones", false)
+        var coc1 = Item(daoTarea.getTareaId("Cocina"), "Hacer canelones", false)
         daoTarea.addItem(coc1)
         val itemsCocina: List<Item> = daoTarea.getItems(daoTarea.getCategoriaId("hogar"))
         itemsCocina.forEach{
@@ -66,9 +69,9 @@ class MainActivity : AppCompatActivity() {
 
 
         Log.d("pruebas", " *** Añado tareas a la categoria Viajes *** ")
-        var playa = Tarea( viajes, viajes, "Playas")
+        var playa = Tarea( daoTarea.getCategoriaId("Viajes") , "Playas")
         daoTarea.addTarea( playa)
-        var mont = Tarea( viajes, viajes, "Montañas")
+        var mont = Tarea( daoTarea.getCategoriaId("Viajes") , "Montañas")
         daoTarea.addTarea( mont)
         val tareasViaje: List<Tarea> = daoTarea.getTareas(daoTarea.getCategoriaId("viajes"))
         tareasViaje.forEach {
