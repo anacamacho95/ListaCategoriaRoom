@@ -16,18 +16,29 @@ class InterfaceDao: InterfaceDaoConexion, InterfaceDaoCategorias, InterfaceDaoTa
     override fun createConexion(con: BDRoom) {
         db = con as BDRoom
     }
+    //---------- NUEVO
+    override fun getCategoriaId(nombre: String): Int {
+        return db.conexion.daoCategoria().getCategoriaId(nombre)
+    }
 
+    override fun getTareaId(nombre: String): Int {
+        return db.conexion.daoTarea().getTareaId(nombre)
+    }
+
+    override fun getItemId(nombre: String): Int {
+        return  db.conexion.daoTarea().getItemId(nombre)
+    }
+    // ----------------
     override fun addCategoria(ca: Categoria) {
         db.conexion.daoCategoria().addCategoria(ca)
-
     }
 
     override fun getCategorias(): MutableList<Categoria> {
         return db.conexion.daoCategoria().getCategorias()
     }
 
-    override fun getCategoria(nombre: String): Categoria? {
-        return db.conexion.daoCategoria().getCategoria(nombre)
+    override fun getCategoria(ca: Categoria): Categoria? {
+        return db.conexion.daoCategoria().getCategoria(ca)
     }
 
     override fun updateCategoria(ca: Categoria) {
@@ -38,42 +49,37 @@ class InterfaceDao: InterfaceDaoConexion, InterfaceDaoCategorias, InterfaceDaoTa
         return db.conexion.daoCategoria().deleteCategoria(ca)
     }
 
-    override fun addTarea(ta: Tarea) {
-        return db.conexion.daoTarea().addTarea(ta)
-
-         //
+    override fun addTarea(ca: Categoria, ta: Tarea) {
+        return db.conexion.daoTarea().addTarea(ca,ta)
     }
 
-    override fun getCategoriaId(nombre: String): Int {
-        return db.conexion.daoTarea().getCategoriaId(nombre)
+    override fun getTareas(ca: Categoria): MutableList<Tarea> {
+        return db.conexion.daoTarea().getTareas(ca)
     }
 
-    override fun getTareas(idCat: Int): MutableList<Tarea> {
-        return db.conexion.daoTarea().getTareas(idCat)
+    override fun getTarea(ta: Tarea): Tarea? {
+        return  db.conexion.daoTarea().getTarea(ta)
     }
 
-    override fun updateTarea(ta: Tarea) {
-        return db.conexion.daoTarea().updateTarea(ta)
+    override fun updateNombreTarea(ca: Categoria, taAnt: Tarea, taNue: Tarea) {
+        return db.conexion.daoTarea().updateNombreTarea(ca,taAnt,taNue)
     }
 
-    override fun deleteTarea(ta: Tarea) {
-        return db.conexion.daoTarea().deleteTarea(ta)
+
+    override fun deleteTarea(ca: Categoria, ta: Tarea) {
+        return db.conexion.daoTarea().deleteTarea(ca,ta)
     }
 
     override fun addItem(ite: Item) {
         return db.conexion.daoTarea().addItem(ite)
     }
 
-    override fun getTareaId(nombre: String): Int {
-        return db.conexion.daoTarea().getTareaId(nombre)
-    }
-
-    override fun getItemId(nombre: String): Int {
-        return  db.conexion.daoTarea().getItemId(nombre)
-    }
-
     override fun getItems(id: Int): MutableList<Item> {
         return db.conexion.daoTarea().getItems(id)
+    }
+
+    override fun getItem(it: Item): Item? {
+        return db.conexion.daoTarea().getItem(it)
     }
 
     override fun updateItem(ite: Item) {

@@ -7,31 +7,32 @@ import com.example.listacategoriaroom.entidades.Tarea
 
 @Dao
 interface InterfaceDaoTareas {
+    //getId
+    @Query("SELECT idTarea FROM Tarea WHERE nombre LIKE :nombre")
+    fun getTareaId(nombre: String): Int
+    @Query("SELECT idItem FROM Item WHERE accion LIKE :nombre")
+    fun getItemId(nombre: String): Int
+
     //CRUD TAREAS
     @Insert
-    fun addTarea (ta: Tarea)
+    fun addTarea (ca: Categoria, ta: Tarea)
     // Obtener ID de Categoria por nombre
-    @Query("SELECT idCategoria FROM Categoria WHERE nombre LIKE :nombre")
-    fun getCategoriaId(nombre: String): Int
-    @Query("SELECT * FROM Tarea WHERE categoriaPadreId = :idCat ")
-    fun getTareas(idCat: Int): MutableList<Tarea>
+    @Query("SELECT * FROM Tarea WHERE categoriaPadreId = :idCategoria ")
+    fun getTareas(ca: Categoria): MutableList<Tarea>
+    @Query ("SELECT * FROM Tarea WHERE idTarea = :id")
+    fun getTarea (ta: Tarea): Tarea?
     @Update
-    fun updateTarea(ta: Tarea)
+    fun updateNombreTarea(ca: Categoria, taAnt: Tarea, taNue: Tarea)
     @Delete
-    fun deleteTarea (ta: Tarea)
+    fun deleteTarea (ca: Categoria, ta: Tarea)
 
     //CRUD ITEMS
     @Insert
     fun addItem (ite: Item)
-    // Obtener ID de Tarea por nombre
-    @Query("SELECT idTarea FROM Tarea WHERE nombre LIKE :nombre")
-    fun getTareaId(nombre: String): Int
-
-    @Query("SELECT idItem FROM Item WHERE accion LIKE :nombre")
-    fun getItemId(nombre: String): Int
-
     @Query("SELECT * FROM Item WHERE tareaPadreId LIKE :id")
     fun getItems(id: Int): MutableList<Item>
+    @Query("SELECT * FROM Item WHERE idItem = :id")
+    fun getItem (it: Item): Item?
     @Update
     fun updateItem(ite: Item)
     @Delete
