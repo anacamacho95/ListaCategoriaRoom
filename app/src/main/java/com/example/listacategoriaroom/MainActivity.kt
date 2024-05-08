@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         val obtHogar: Categoria? = daoCategoria.getCategoria(hogar)
         Log.d("pruebas", obtHogar?.nombre ?: "no encontrada")
 
+        //CAMBIOS -- Añado daoTarea.getCategoriaId
+
         Log.d("pruebas", " *** Añado tareas a la categoria Hogar *** ")
         var cocina = Tarea( daoTarea.getCategoriaId("Hogar"),"Cocina")
         daoTarea.addTarea( hogar, cocina)
