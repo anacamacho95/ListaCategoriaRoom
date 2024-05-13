@@ -10,41 +10,55 @@ import com.example.listacategoriaroom.entidades.Tarea
 import com.example.listacategoriaroom.interfaces.InterfaceDaoCategorias
 import com.example.listacategoriaroom.interfaces.InterfaceDaoTareas
 
-class BDRoom (private val context: Context){
-    val conexion= BaseDatos.getBaseDatos(context)
+@Database(entities = [Categoria::class, Tarea::class, Item::class], version = 2)
+abstract class BDRoom: RoomDatabase(){
 
-    fun borrarArchivos(){
-        // Cierra la conexión de la base de datos antes de borrar los archivos
-        conexion.close()
-
-        // Borra la base de datos
-        context.deleteDatabase("categoriasDB")
-
-        // Vuelve a crear la base de datos
-        BaseDatos.INSTANCE = null
-        BaseDatos.getBaseDatos(context)
-    }
-}
-@Database(entities = [Categoria::class, Tarea::class, Item::class], version = 1)
-abstract class BaseDatos: RoomDatabase(){
-
+    // Estos métodos abstractos proporcionan acceso al DAO correspondiente
     abstract fun daoCategoria(): InterfaceDaoCategorias
     abstract fun daoTarea(): InterfaceDaoTareas
 
     companion object {
-        var INSTANCE: BaseDatos?=null
-        fun getBaseDatos(context: Context): BaseDatos {
+        var INSTANCE: BDRoom?=null
+        fun getBaseDatos(context: Context): BDRoom {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
-                    BaseDatos::class.java,
+                    BDRoom::class.java,
                     "categoriasDB"
-                ).allowMainThreadQueries().build()
+                ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
                 //Con migracion hay que incrementar la version y añadirle que migracion
                 /*INSTANCE = Room.databaseBuilder(context.getApplicationContext(),BaseDatos.class,
                     "DietaBD").addMigrations(MIGRATION1_2).allowMainThreadQueries().build();*/
             }
-            return INSTANCE as BaseDatos
+            return INSTANCE as BDRoom
         }
     }
+
+    fun borrarArchivos () {
+        val daoCategoria = INSTANCE?.daoCategoria()
+        val daoTarea = INSTANCE?.daoTarea()
+
+        // Obtener todas las categorías
+        val categorias = daoCategoria?.getCategorias()
+
+        // Eliminar todas las tareas asociadas a cada categoría y luego eliminar la categoría
+        categorias?.forEach { categoria ->
+            // Obtener todas las tareas asociadas a esta categoría
+            val tareas = daoTarea?.getTareas(categoria.idCategoria)
+
+            // Eliminar todas las tareas asociadas a esta categoría
+            tareas?.forEach { tarea ->
+                // Eliminar todos los items asociados a esta tarea
+                val items = daoTarea.getItems(tarea.idTarea)
+                items.forEach { item ->
+                    daoTarea.deleteItem(item)
+                }
+                daoTarea.deleteTarea(tarea)
+            }
+
+            // Finalmente, eliminar la categoría
+            daoCategoria?.deleteCategoria(categoria)
+        }
+    }
+
 }

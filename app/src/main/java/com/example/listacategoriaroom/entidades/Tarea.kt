@@ -7,15 +7,15 @@ import java.io.Serializable
     foreignKeys = [
         ForeignKey(
             entity = Categoria::class,
-            parentColumns = ["idCategoria"],
-            childColumns = ["categoriaPadreId"]
+            parentColumns = ["idCategoria"], //nombre que tiene el id de la categoria Padre
+            childColumns = ["categoria"] //nombre de la categoria padre en la categoria Hijo
         )
     ]
 
 )
 class Tarea (
-    @ColumnInfo(name ="categoriaPadreId")
-    var categoriaPadreId: Int,
+    @ColumnInfo(name ="categoria")
+    var categoria: Int,
     @ColumnInfo (name = "nombre")
     var nombre: String ): Serializable {
 
@@ -23,11 +23,13 @@ class Tarea (
     @ColumnInfo (name = "idTarea")
     var idTarea = 0
 
-    @Ignore
-    lateinit var categoriaPadre: Categoria
-
     //una tarea tiene un conjunto de items
     @Ignore
     var items: MutableList<Item> = mutableListOf()
+
+    override fun toString(): String {
+        return "Tarea (nombre='$nombre', idTarea=$idTarea)"
+    }
+
 
 }

@@ -8,13 +8,13 @@ import java.io.Serializable
         ForeignKey(
             entity = Tarea::class,
             parentColumns = ["idTarea"],
-            childColumns = ["tareaPadreId"]
+            childColumns = ["tarea"]
         )
     ]
 )
 class Item (
-    @ColumnInfo(name ="tareaPadreId")
-    var tareaPadreId: Int,
+    @ColumnInfo(name ="tarea")
+    var tarea: Int,
     @ColumnInfo (name = "accion")
     var accion: String = "",
     @ColumnInfo (name = "activo" )
@@ -24,7 +24,9 @@ class Item (
     @ColumnInfo (name = "idItem")
     var idItem = 0
 
-    @Ignore
-    lateinit var tareaPadre: Tarea
+    override fun toString(): String {
+        return "Item( id=$idItem, accion='$accion', activo=$activo)"
+    }
+
 
 }

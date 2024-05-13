@@ -17,4 +17,10 @@ class Categoria (
     //Una categoria tiene muchas tareas
     @Ignore
     var tareas : MutableList<Tarea> = mutableListOf()
+
+    override fun toString(): String {
+        return "Categoria(nombre='$nombre')"
+    }
+
+
 }
