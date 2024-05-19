@@ -10,7 +10,7 @@ import com.example.listacategoriaroom.entidades.Tarea
 import com.example.listacategoriaroom.interfaces.InterfaceDaoCategorias
 import com.example.listacategoriaroom.interfaces.InterfaceDaoTareas
 
-@Database(entities = [Categoria::class, Tarea::class, Item::class], version = 2)
+@Database(entities = [Categoria::class, Tarea::class, Item::class], version = 1)
 abstract class BDRoom: RoomDatabase(){
 
     // Estos métodos abstractos proporcionan acceso al DAO correspondiente
@@ -24,8 +24,8 @@ abstract class BDRoom: RoomDatabase(){
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     BDRoom::class.java,
-                    "categoriasDB"
-                ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
+                    "categoriasDB2"
+                ).allowMainThreadQueries().build()
                 //Con migracion hay que incrementar la version y añadirle que migracion
                 /*INSTANCE = Room.databaseBuilder(context.getApplicationContext(),BaseDatos.class,
                     "DietaBD").addMigrations(MIGRATION1_2).allowMainThreadQueries().build();*/

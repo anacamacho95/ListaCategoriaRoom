@@ -8,7 +8,8 @@ import java.io.Serializable
         ForeignKey(
             entity = Categoria::class,
             parentColumns = ["idCategoria"], //nombre que tiene el id de la categoria Padre
-            childColumns = ["categoria"] //nombre de la categoria padre en la categoria Hijo
+            childColumns = ["categoria"], //nombre de la categoria padre en la categoria Hijo
+            onDelete = ForeignKey.CASCADE // Configura la eliminación en cascada
         )
     ]
 

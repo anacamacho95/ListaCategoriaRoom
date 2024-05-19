@@ -8,7 +8,9 @@ import java.io.Serializable
         ForeignKey(
             entity = Tarea::class,
             parentColumns = ["idTarea"],
-            childColumns = ["tarea"]
+            childColumns = ["tarea"],
+            onDelete = ForeignKey.CASCADE // Configura la eliminación en cascada
+
         )
     ]
 )
